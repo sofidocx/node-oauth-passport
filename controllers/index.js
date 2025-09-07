@@ -38,6 +38,7 @@ exports.login = async (req, res, next) => {
     try {
 
         if(user) {
+            req.session.user = user 
             res.redirect('/members'); 
         }else{
             res.render('index'); 
@@ -46,5 +47,14 @@ exports.login = async (req, res, next) => {
     }catch(err){
         console.log(err); 
         res.render('index'); 
+    }
+}
+
+exports.checkAuth = (req, res, next) => {
+
+    if(req.session && req.session.user) {
+        next(); 
+    }else{
+        res.redirect('/'); 
     }
 }
